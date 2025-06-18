@@ -1,0 +1,1 @@
+echo '{   "api_key": "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",   "features": {     "self_updater": {       "enabled": true,       "repo_url": "https://your-real-repo-url"     }   } }' > ai_config.json
