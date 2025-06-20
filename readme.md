@@ -1,157 +1,131 @@
 [العربية](README_ar.md)
 
-# Termux EL AI Agent
-
-This project aims to create a powerful, intelligent, and autonomous AI assistant for Termux, capable of executing commands, thinking on its own, and interacting via various interfaces, including a Telegram bot.
-
-## Features
-
--   **Modular Architecture:** Organized into core components, operational modes, and interfaces for easy maintenance and expansion.
--   **AgentLoop (Think & Act):** The AI can analyze, plan, execute commands, and review results autonomously.
--   **Red Team Mode:** A specialized mode for network and system discovery, enumeration, and exploitation, integrating with tools like Nmap, Whois, and Metasploit.
--   **Telegram Bot Integration:** Control and interact with the AI agent remotely via Telegram.
--   **Silent Mode:** Execute commands and receive responses without printing them to the console.
--   **Dynamic System Prompt:** The AI's persona and behavior can be changed dynamically based on the active mode.
-
-## Setup and Installation
-
-### 1. Install Termux
-
-If you don't have Termux, install it from F-Droid or GitHub (Google Play Store version might be outdated).
-
-### 2. Update Termux Packages
+# <span style="color: #00ff00;">[[ TERMUX AI ASSISTANT ]]</span>
 
 ```bash
-pkg update && pkg upgrade
+#####################################################################
+#                                                                   #
+#   A.I. Powered Shell Companion for Termux - DeepInfra Edition    #
+#                                                                   #
+#   > Status: ONLINE                                                #
+#   > Protocol: LLM_CMD_INTERCEPT                                   #
+#   > Environment: TERMUX_SHELL                                     #
+#                                                                   #
+#####################################################################
 ```
 
-### 3. Install Python and Pip
+This Python script transforms your Termux environment into an interactive AI-powered command-line assistant. By integrating with the DeepInfra API, it enables conversational interaction, intelligent command suggestions, and automated execution within your shell.
 
-```bash
-pkg install python
-```
+## <span style="color: #00ffff;">// CORE CAPABILITIES //</span>
 
-### 4. Install Python Dependencies
+*   **LLM Integration**: Seamlessly connects to DeepInfra's powerful Large Language Models for natural language understanding and generation.
+*   **Command Interception & Execution**: Intelligently identifies shell commands within AI responses (encapsulated in `<CMD>...</CMD>` tags) and executes them directly.
+*   **Contextual Awareness**: Maintains a dynamic conversation history, providing the LLM with crucial context for more accurate and relevant interactions.
+*   **Output Interpretation**: Feeds command outputs (and errors) back to the LLM for real-time analysis and further actionable insights.
+*   **Configurable AI Model**: Easily switch between various DeepInfra models to tailor the AI's behavior and capabilities.
 
-```bash
-pip install requests python-dotenv python-telegram-bot
-```
+## <span style="color: #00ffff;">// SYSTEM REQUIREMENTS //</span>
 
-### 5. Install External Tools (for Red Team Mode)
+Before deploying the AI Assistant, ensure your Termux environment meets the following specifications:
 
--   **Nmap & Whois:**
+*   **Python 3.x**: The core interpreter for the script.
+*   **pip**: Python's package management system.
+*   **DeepInfra API Key**: An active API key from DeepInfra is mandatory for LLM access.
+
+## <span style="color: #00ffff;">// DEPLOYMENT PROCEDURE //</span>
+
+Follow these steps to set up the AI Assistant in your Termux environment:
+
+1.  **Acquire Script**: Download or clone the `ai_assistant.py` script to your desired directory within Termux.
+
+2.  **Install Dependencies**: Execute the following command in your Termux terminal to install required Python libraries:
+
     ```bash
-    pkg install nmap whois
+    pip install python-dotenv requests
     ```
--   **Metasploit Framework (Optional & Advanced):**
-    Installing Metasploit in Termux is complex and resource-intensive. Search for up-to-date guides (e.g., "install metasploit termux"). A common method involves:
-    ```bash
-    pkg install curl wget git
-    curl -LO https://raw.githubusercontent.com/Hax4us/Metasploit_termux/master/metasploit.sh
-    chmod +x metasploit.sh
-    ./metasploit.sh
+
+3.  **API Key Configuration**: Create a file named `.env` in the *same directory* as `ai_assistant.py`. Populate it with your DeepInfra API key:
+
+    ```text
+    DEEPINFRA_API_KEY=YOUR_API_KEY_HERE
     ```
-    **Warning:** Metasploit installation can be unstable and requires significant storage.
+    **NOTE**: Replace `YOUR_API_KEY_HERE` with your actual DeepInfra API key.
 
-### 6. Clone the Project (or copy files)
+## <span style="color: #00ffff;">// OPERATIONAL PARAMETERS //</span>
 
-If you have `git` installed:
-```bash
-git clone <repository_url> EL # Replace <repository_url> with the actual URL if this were a repo
-cd EL
-```
+Customize the AI Assistant's behavior by modifying these parameters:
 
-If you're copying the files manually, ensure all files are placed in the correct modular structure:
+*   **`DEEPINFRA_API_KEY`**: (Mandatory) Loaded from `.env`. This is your authentication token for DeepInfra services.
 
-```
-EL/
-├── core/
-│   ├── executor.py
-│   ├── memory.py
-│   ├── llm_handler.py
-│   └── context.py
-├── modes/
-│   ├── agentloop.py
-│   └── redteam.py
-├── interfaces/
-│   └── telegram_bot.py
-├── EL.py
-└── .env
-```
+*   **`DEEPINFRA_MODEL`**: (Optional) Located within `ai_assistant.py`. Default is `deepseek-ai/DeepSeek-V3-0324`. Explore DeepInfra's model catalog to select an alternative:
 
-### 7. Configure Environment Variables (`.env` file)
+    ```python
+    DEEPINFRA_MODEL = "deepseek-ai/DeepSeek-V3-0324" # <--- ADJUST AS REQUIRED
+    ```
 
-Navigate to the `EL/` directory and open the `.env` file. You need to provide your API keys:
+*   **`max_tokens`**: (Optional) Controls the maximum length of AI-generated responses. Adjust in the `payload` dictionary within `get_llm_response`.
 
-```
-DEEPINFRA_API_KEY=YOUR_DEEPINFRA_API_KEY_HERE
-DEEPINFRA_MODEL=deepseek-ai/DeepSeek-V3-0324
-TELEGRAM_BOT_TOKEN=YOUR_TELEGRAM_BOT_TOKEN_HERE
-```
+*   **`temperature`**: (Optional) Influences the creativity/randomness of AI responses (0.0 for deterministic, higher for more creative). Adjust in the `payload` dictionary.
 
--   **`DEEPINFRA_API_KEY`:** Obtain this from DeepInfra (e.g., from your account dashboard).
--   **`DEEPINFRA_MODEL`:** The default is `deepseek-ai/DeepSeek-V3-0324`. You can change it to any other model supported by DeepInfra.
--   **`TELEGRAM_BOT_TOKEN`:** Talk to `@BotFather` on Telegram to create a new bot and get its token.
+## <span style="color: #00ffff;">// INITIATING ASSISTANT //</span>
 
-## Usage
-
-### Running the Agent
-
-Navigate to the `EL/` directory in Termux and run:
+To launch the AI Assistant, navigate to the script's directory in Termux and execute:
 
 ```bash
-python EL.py
+python ai_assistant.py
 ```
 
-### Interacting with the Agent
+Interact with the AI by typing your queries or commands. The assistant will process your input, provide responses, and, if applicable, execute suggested shell commands, displaying their output.
 
-Once running, you can type your commands directly into the Termux console.
+Type `exit` to terminate the assistant session.
 
-#### Modes:
+### <span style="color: #00ffff;">// INTERACTION LOG EXAMPLE //</span>
 
--   **Normal Agent Mode (Default):** The AI acts as a general-purpose assistant.
-    -   To switch to this mode: `mode normal`
--   **Red Team Mode:** The AI acts as an elite red-team agent, focusing on network and system tasks.
-    -   To switch to this mode: `mode redteam`
+```text
+Termux AI Assistant (powered by DeepInfra). Type 'exit' to quit.
 
-#### Special Commands:
+You: What is my current working directory?
+AI (raw response): Your current working directory is where you are currently operating within the file system. To find out what it is, you can use the `pwd` command. <CMD>pwd</CMD>
+AI: I'm about to execute: `pwd`
+Command Output:
+/data/data/com.termux/files/home
+AI: Your current working directory is `/data/data/com.termux/files/home`.
 
--   `exit`: Quits the agent.
--   `silent on`: Activates silent mode. AI responses will not be printed to the console (useful for Telegram bot interaction).
--   `silent off`: Deactivates silent mode. AI responses will be printed to the console.
--   `start_telegram_bot`: Starts the Telegram bot interface. Once started, you can interact with the AI via your Telegram bot.
+You: List the files in this directory.
+AI (raw response): To list the files in your current directory, you can use the `ls` command. <CMD>ls</CMD>
+AI: I'm about to execute: `ls`
+Command Output:
+ai_assistant.py
+.bashrc
+.env
+AI: The files in your current directory are `ai_assistant.py`, `.bashrc`, and `.env`.
 
-#### Red Team Mode Examples:
+You: exit
+Goodbye!
+```
 
--   `scan network` (will execute `nmap -T4 -F 192.168.1.0/24` by default)
--   `whois example.com` (will execute `whois example.com`)
--   `use msf exploit/multi/handler` (will execute `msfconsole -q -x 'use exploit/multi/handler; run'`)
+## <span style="color: #ff0000;">// SECURITY ADVISORY //</span>
 
-### Telegram Bot Usage
+**CRITICAL WARNING**: The script utilizes `shell=True` within `subprocess.run`, which poses a significant security risk if arbitrary or untrusted commands are executed. While designed for a personal Termux environment, be aware that malicious commands, whether from an unconstrained LLM or a compromised source, could potentially compromise your system.
 
-1.  Ensure `TELEGRAM_BOT_TOKEN` is correctly set in your `.env` file.
-2.  Run the agent: `python EL.py`
-3.  In the agent's console, type `start_telegram_bot`.
-4.  Go to your Telegram app, find your bot by its username, and start chatting with it. You can send commands like `/start`, `/help`, or any natural language query.
+**RECOMMENDATION**: It is **STRONGLY ADVISED** to uncomment and implement the user confirmation step before any command execution. This provides a crucial layer of security:
 
-## Security Considerations (CRITICAL!)
+```python
+            # --- SECURITY WARNING: Consider adding a confirmation step here! ---
+            # confirm = input("Execute this command? (y/n): ").lower()
+            # if confirm != 'y':
+            #     print("Command execution cancelled.")
+            #     conversation_history.append(f"AI: Command execution cancelled.")
+            #     continue
+```
 
-**Giving an AI direct access to execute arbitrary shell commands is a major security risk.** This project is designed for advanced users who understand these risks.
+## <span style="color: #ffcc00;">// TROUBLESHOOTING LOG //</span>
 
--   **Sandbox Environment:** Always run this agent in a sandboxed environment (e.g., a dedicated Termux instance, a virtual machine, or a chroot environment) that is isolated from your main system and sensitive data.
--   **Limited Permissions:** Ensure the Termux environment and the user running the script have only the absolute minimum necessary permissions.
--   **Command Confirmation:** For any production or sensitive use, **it is highly recommended to implement a user confirmation step** before the AI executes any command, especially those that are potentially destructive (e.g., `rm`, `mv`, `dd`, `format`). The current implementation executes commands directly for demonstration purposes.
--   **Network Isolation:** When using Red Team mode or any network-scanning capabilities, ensure you are only targeting networks and systems you have explicit permission to test (e.g., your own local test network, virtual machines).
--   **LLM Hallucinations:** Large Language Models can generate incorrect or non-existent commands. Always review the AI's suggested actions.
+*   **`DEEPINFRA_API_KEY not found`**: Verify the `.env` file exists in the correct directory and contains `DEEPINFRA_API_KEY=YOUR_API_KEY_HERE`.
+*   **`Error communicating with DeepInfra API`**: Check your network connectivity and confirm your `DEEPINFRA_API_KEY` is valid and active.
+*   **`Command not found`**: If the AI suggests an unrecognized command, you may need to install the corresponding package in Termux (e.g., `pkg install <package_name>`).
 
-## Future Enhancements
+## <span style="color: #00ff00;">// LICENSE //</span>
 
--   **Tool Use / Function Calling:** Implement a more robust tool-use mechanism where the LLM directly calls predefined functions (e.g., `execute_command`, `read_file`) instead of parsing `<CMD>` tags.
--   **Risk Scoring:** Implement a feature to assess the risk level of suggested commands before execution.
--   **Voice Input:** Integrate voice recognition for hands-free interaction.
--   **Agent Improv Mode:** Develop self-improvement mechanisms based on successful and failed interactions.
--   **Persistent Memory:** Save conversation history and context to a file for long-term memory.
-
-This project is a powerful tool. Use it responsibly and ethically.
-
+This project is distributed under the **MIT License**.
 
