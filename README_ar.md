@@ -1,4 +1,6 @@
 [English](README.md)
+
+[موقعي](https://marwangpt237.github.io/Nefy/)
 # <span style="color: #00ff00;">[[ مساعد الذكاء الاصطناعي لـ Termux ]]</span>
 
 ```bash
